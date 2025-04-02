@@ -235,3 +235,56 @@ class RealProperty:
 ''' Objects as attributes '''
 
 # Pets
+class Pet:
+    def __init__(self, name : str , model: str):
+        self.name = name
+        self.model = model
+    def __str__(self):
+        return f"Pet(name='{self.name}', model='{self.model}')"
+class Person:
+    def __init__(self, name: str, pet : Pet):
+        self.name = name
+        self.pet = pet
+    def __str__(self):
+        return f"Person(name='{self.name}', pet={self.pet})"
+
+# hulda = Pet("Hulda", "mixed-breed dog")
+# levi = Person("Levi", hulda)
+# print(levi)
+
+# A box of presents
+class Present:
+    def __init__(self, name, weight):
+        self.name = name
+        self.weight = weight
+    def __str__(self):
+        return f"Present{self.name} ({self.weight}kg)"
+
+class Box:
+    def __init__(self):
+        self.box = []
+        # self.tota_weight = []  Gives wrong answer
+    
+    def __str__(self):
+        return f"{self.tota_weight}"
+
+    def add_present(self, present: Present):
+        self.box.append(present)
+        # print(box)
+        
+
+    def total_weight(self):
+        tota_weight = []   # local varibale is the answer
+        for i in self.box:
+            tota_weight.append(i.weight)
+        return sum(tota_weight)
+
+book = Present("ABC Book", 2)
+
+box = Box()
+box.add_present(book)
+print(box.total_weight())
+
+cd = Present("Pink Floyd: Dark Side of the Moon", 1)
+box.add_present(cd)
+print(box.total_weight())
