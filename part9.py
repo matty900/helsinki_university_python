@@ -279,12 +279,78 @@ class Box:
             tota_weight.append(i.weight)
         return sum(tota_weight)
 
-book = Present("ABC Book", 2)
+# book = Present("ABC Book", 2)
 
-box = Box()
-box.add_present(book)
-print(box.total_weight())
+# box = Box()
+# box.add_present(book)
+# print(box.total_weight())
 
-cd = Present("Pink Floyd: Dark Side of the Moon", 1)
-box.add_present(cd)
-print(box.total_weight())
+# cd = Present("Pink Floyd: Dark Side of the Moon", 1)
+# box.add_present(cd)
+# print(box.total_weight())
+
+# The shortest person in the room
+
+class Person:
+    def __init__(self, name, height):
+        self.name = name
+        self.height = height
+    def __str__(self):
+        return f"{self.name} {self.height}"
+class Room:
+    def __init__(self):
+        self.persons= []
+    
+    def add(self,person: Person):
+        self.persons.append(person)
+    
+    def is_empty(self):
+        return len(self.persons) > 0
+    
+    def print_contents(self):
+        for person in self.persons:
+            print(person)
+            
+        total_height = sum(person.height for person in self.persons)
+        num_persons = len(self.persons)
+
+        print(f"There are {num_persons} persons in the room, and their combined height is {total_height} cm")
+        for person in self.persons:
+            print(person)
+
+    def shortest(self):
+        if not self.persons:  
+            return None
+        shortest_person = self.persons[0] 
+        for person in self.persons:
+            if person.height < shortest_person.height:
+                shortest_person = person
+        return shortest_person.name 
+    
+    def remove_shortest(self): # Removing a person from the room (Need to be compeleted)
+        if not self.persons:  
+            return None
+        shortest_person = self.persons[0] 
+        for person in self.persons:
+            if person.height < shortest_person.height:
+                shortest_person = person
+        self.persons.remove(shortest_person)
+        return shortest_person
+
+
+room = Room()
+
+room.add(Person("Lea", 183))
+room.add(Person("Kenya", 172))
+room.add(Person("Nina", 162))
+room.add(Person("Ally", 166))
+room.print_contents()
+
+print()
+
+removed = room.remove_shortest()
+print(f"Removed from room: {removed.name}")
+
+print()
+
+room.print_contents()
