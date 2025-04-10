@@ -338,19 +338,171 @@ class Room:
         return shortest_person
 
 
-room = Room()
+# room = Room()
 
-room.add(Person("Lea", 183))
-room.add(Person("Kenya", 172))
-room.add(Person("Nina", 162))
-room.add(Person("Ally", 166))
-room.print_contents()
+# room.add(Person("Lea", 183))
+# room.add(Person("Kenya", 172))
+# room.add(Person("Nina", 162))
+# room.add(Person("Ally", 166))
+# room.print_contents()
 
-print()
+# print()
 
-removed = room.remove_shortest()
-print(f"Removed from room: {removed.name}")
+# removed = room.remove_shortest()
+# print(f"Removed from room: {removed.name}")
 
-print()
+# print()
 
-room.print_contents()
+# room.print_contents()
+
+''' ** Encapsulation **
+In object oriented programming the term client refers to a program which uses a class, or instances of a class
+Final goal:
+1. the use of a class and/or objects is as simple as possible from the client's point of view
+2. integrity of any object is preserved all time => direct access to class attributes(variables) is not possible. ONLY through it's methods(functions)
+Hiding these attributes from clinet achieved by using __ to the beginning of the attribute name => 
+class CreditCard:
+    def __init__(self, number: str, name: str):
+        self.__number = number  # encapsulation (this attribute is hidden)
+        self.name = name
+Getter  @property   and Setter @methodname.setter
+'''
+# Car
+class Car:
+    def __init__(self):
+        self.__amount = 0
+        self.__odometer = 0
+    def fill_up(self):
+            self.__amount = 60
+    def drive(self, km):
+        if km < self.__amount:
+            self.__odometer += km
+            self.__amount -= km
+        else:
+            self.__odometer = 60
+            self.__amount = 0
+    def __str__(self):
+        return f"Car: odometer reading {self.__odometer} km, petrol remaining {self.__amount} litres"
+    
+# car = Car()
+# print(car)
+# car.fill_up()
+# print(car)
+# car.drive(20)
+# print(car)
+# car.drive(50)
+# print(car)
+# car.drive(10)
+# print(car)
+# car.fill_up()
+# car.fill_up()
+# print(car)
+
+# Recording
+class Recording:
+    def __init__(self, length):
+        self.__length = length
+    # def __str__(self):     # Instead of __str__ 
+    #     return f"{self.__length}"
+    @property            # Getter
+    def length(self): 
+        return self.__length
+    @length.setter       # Setter
+    def length(self, length ):
+        if length > 0:
+            self.__length = length
+        else:
+            raise ValueError("the length cannot be negative")
+
+# the_wall = Recording(43)
+# print(the_wall)
+# print(the_wall.length)
+# the_wall.length = 44
+# print(the_wall.length)
+
+
+
+# NOTE: Encapsulation is mainly for hiding attributes from clinet and make them accessibe only thorugh getter and setters
+# WITH ENCAPSULATION
+class Player:
+    def __init__(self,name, age):
+        self.__name = name
+        self.age = age
+    @property   
+    def name(self):
+        return self.__name
+     
+    def __str__(self):
+        return f"{self.__name} : {self.age}"
+    
+# plyer1 = Player("alice",22)
+# print(plyer1.name)  # by removing getter name won't be displayed because of hidden feature of __name attribute
+# print(plyer1)       # Yet, for displaying the whole instance of the class we need __str__  
+
+# WITHOUT ENCAPSULATION
+class Player:
+    def __init__(self,name, age):
+        self.name = name
+        self.age = age
+    
+# plyer1 = Player("alice",22)  # can access the 
+# print(plyer1.name)
+
+
+# NOTE: the difference between def owner(self, owner): and   def add_entry(self, entry: str): even though they both add value to private or encapsulated attributes
+# is that : with setter we can assign a value like a normal attribute such as : dairy.owner = "Mahdi" instead of diary.set_owner("")
+class Diary:
+    def __init__(self, owner: str):
+        self.__owner = owner
+        self.__entries = []
+
+    @property
+    def owner(self):
+        return self.__owner
+
+    @owner.setter   
+    def owner(self, owner):
+        if owner != "":
+            self.__owner = owner
+        else:
+            raise ValueError("The owner may not be an empty string")
+
+    def add_entry(self, entry: str):
+        self.__entries.append(entry)
+
+    def print_entries(self):
+        print("A total of", len(self.__entries), "entries")
+        for entry in self.__entries:
+            print("- " + entry)
+
+# Weather station
+class WeatherStation:
+    def __init__(self, station):
+        self.station = station
+        self.observations = []
+
+    def add_observation(self, observation: str):
+        self.observations.append(observation)
+
+    def latest_observation(self):
+        if self.observations:
+            return self.observations[-1]
+        else:
+            return "nothing found"
+    def number_of_observations(self):
+        return len(self.observations)
+    def __str__(self):
+        return f"{self.station} , {len(self.observations)} observations"
+
+station = WeatherStation("Houston")
+station.add_observation("Rain 10mm")
+station.add_observation("Sunny")
+print(station.latest_observation())
+
+station.add_observation("Thunderstorm")
+print(station.latest_observation())
+
+print(station.number_of_observations())
+print(station)
+
+''' Scope of methods '''
