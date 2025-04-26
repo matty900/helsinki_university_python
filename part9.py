@@ -402,8 +402,8 @@ class Car:
 class Recording:
     def __init__(self, length):
         self.__length = length
-    # def __str__(self):     # Instead of __str__ 
-    #     return f"{self.__length}"
+    def __str__(self):     # Instead of __str__  we simply can use the instance 
+        return f"{self.__length}"
     @property            # Getter
     def length(self): 
         return self.__length
@@ -414,7 +414,7 @@ class Recording:
         else:
             raise ValueError("the length cannot be negative")
 
-# the_wall = Recording(43)
+the_wall = Recording(43)
 # print(the_wall)
 # print(the_wall.length)
 # the_wall.length = 44
@@ -449,8 +449,10 @@ class Player:
 # print(plyer1.name)
 
 
-# NOTE: the difference between def owner(self, owner): and   def add_entry(self, entry: str): even though they both add value to private or encapsulated attributes
-# is that : with setter we can assign a value like a normal attribute such as : dairy.owner = "Mahdi" instead of diary.set_owner("")
+# NOTE: the difference between def owner(self, owner): and   def add_entry(self, entry: str): 
+# even though they both add value to private or encapsulated attributes
+# is that : with setter we can assign a value like a normal attribute such as 
+# : dairy.owner = "Mahdi" instead of diary.set_owner("")
 class Diary:
     def __init__(self, owner: str):
         self.__owner = owner
@@ -494,15 +496,231 @@ class WeatherStation:
     def __str__(self):
         return f"{self.station} , {len(self.observations)} observations"
 
-station = WeatherStation("Houston")
-station.add_observation("Rain 10mm")
-station.add_observation("Sunny")
-print(station.latest_observation())
+# station = WeatherStation("Houston")
+# station.add_observation("Rain 10mm")
+# station.add_observation("Sunny")
+# print(station.latest_observation())
 
-station.add_observation("Thunderstorm")
-print(station.latest_observation())
+# station.add_observation("Thunderstorm")
+# print(station.latest_observation())
 
-print(station.number_of_observations())
-print(station)
+# print(station.number_of_observations())
+# print(station)
 
-''' Scope of methods '''
+''' Scope of methods 
+the goal is to hiding the methods in the class as attributes in the encapsulation section
+'''
+
+# Service charge
+class BankAccount:
+    def __init__(self, name, account_number, balance):
+        self.__name = name
+        self.__account_number = account_number
+        self.__balance = balance
+
+    def __service_charge(self):
+        self.__balance -= self.__balance * 0.01
+
+    def deposit(self, amount:float):
+        self.__balance +=  amount
+        self.__service_charge()
+
+    def withdraw(self, amount:float):
+        self.__balance -= amount
+        self.__service_charge()
+
+    @property
+    def balance(self):
+        return self.__balance
+
+
+# account = BankAccount("Randy Riches", "12345-6789", 1000)
+# account.withdraw(100)
+# print(account.balance)
+# account.deposit(100)
+# print(account.balance)
+
+'''Class attributes
+class variable: 
+class SavingsAccount:
+    general_rate = 0.03
+    1. defined within the class, but outside any mehtod definations,  
+    2. it does not use self prefix.
+    3. accessed through the name of the class SavingsAccount.general_rate
+NOTE: class variable or methods are not attached to any instance of the class 
+Class method (@classmethod):
+cls in here is look like the self parameter
+NOTE: The difference is that cls points to the class while self point to an instance of the class
+    @classmethod
+    def license_plate_valid(cls, plate: str):
+        if len(plate) < 3 or "-" not in plate:
+            return False
+'''
+
+# Postcodes
+class City:
+    # class variable
+    postcodes = {"Helsinki": "00100", "Turku" : "20100" , "Tampere" : "33100", "Rovaniemi": "96100", "Oulu": "90100"}
+
+# # ListHelper
+# class ListHelper:
+#     @classmethod
+#     def greatest_frequency(cls, my_list: list):
+#         for i in my_list:
+#             for j in 
+class ListHelper:
+    def __init__(self):
+        self. most_common_count = 0
+        self. most_common_item = None
+        self. appear_twice_item = None
+        self.counts = {}
+    @classmethod
+    def greatest_frequency(cls,my_list: list):
+        cls.counts = {}
+        for number in my_list:
+            if number in cls.counts:
+                cls.counts[number] += 1
+            else:
+                cls.counts[number] = 1
+        for key in cls.counts:
+            if cls.counts[key] == 2:
+                cls.appear_twice_item = key
+
+    @classmethod
+    def doubles(cls,my_list: list):
+        for  key in cls.counts:
+            if cls.counts[key]  > cls.most_common_count:
+                cls.most_common_count = cls.counts[key] 
+                cls.most_common_item = key
+
+numbers = [1, 1, 2, 1, 3, 3, 4, 5, 5, 5, 6, 5, 5, 5]
+# print(ListHelper.greatest_frequency(numbers))
+# print(ListHelper.doubles(numbers))
+
+
+# NOTE: These two methods are identical 
+# for key in counts:
+#     print(counts[key]) # value
+# for key in counts:
+#     print(key)  # key
+# for key, value in counts.items():
+#     print(key)
+    # print(value)
+
+# print(counts)
+
+
+# FIRST WAY
+
+
+# SECOND WAY
+# for number, count in counts.items():
+#     print(count)
+#     if count > most_common_count:
+#         most_common_count = count
+#         most_common_item = number
+
+
+
+'''More examples with classes
+class default value of parameters
+  class Student:
+    def __init__(self, name: str, student_number: str, credits: int = 0, notes: str = ""):
+NOTE: 
+A) In order: student2 = Student("Sassy Student", "54321", 25)
+B) IF the order not followed it should be named: student4 = Student("Sandy", "98765", notes="absent in academic year 20-21")
+'''
+# Item, Suitcase and Cargo hold
+class Item:
+    def __init__(self, name, weight ):
+        self.__name = name
+        self.__weight = weight
+    
+    # no using @property
+    def name(self):
+        return self.__name  
+    
+    def weight(self):
+        return self.__weight
+    
+    def __str__(self):
+        return f"{self.name()} {self.weight()}kg" # instead of self.name self.weight
+
+
+class Suitcase:
+    def __init__(self, max_weight):
+        self.__max_weight = max_weight  # max weight allowed
+        self.__current_weight = 0       # total weight so far
+        self.__count = 0                # number of items added
+        self.__items = [] 
+        self.__heaviest = 0
+        self.__heavy = []
+
+    def add_item(self, item: Item):
+        if self.__current_weight + item.weight() <= self.__max_weight:
+            self.__items.append(item)
+            self.__current_weight += item.weight()
+            self.__count += 1
+        if item.weight() > self.__heaviest:
+            self.__heaviest = item.weight() 
+            self.__heavy.append(item)
+    
+    def weight(self):
+        return self.__current_weight
+
+    def print_items(self):
+         for item in self.__items:
+            print(item)
+
+    def heaviest_item(self):
+        if self.__heavy:
+            return self.__heavy[-1]
+        else:
+            return None
+    
+    def get_items(self): # Public method to access the list of items in another class (CargoHold class)
+        return self.__items
+
+            
+    def __str__(self):
+        if self.__count == 1 :
+                 return f"{len(self.__items)} item ({self.__current_weight} kg)"
+        else:
+                return f"{len(self.__items)} items ({self.__current_weight} kg)"
+        
+class CargoHold:
+    def __init__(self, max_weight):
+        self.__max_weight = max_weight
+        self.cargos = []
+        self.cargo_count = 0
+    def add_suitcase(self, suitcase: Suitcase):
+        for  item in suitcase.get_items(): # use the public method from Item class to access the list of items
+            self.cargos.append(item)
+        self.__max_weight -= suitcase.weight()
+        self.cargo_count += 1
+    def __str__(self):
+        for i in self.cargos:
+            print(i)
+        return f"{self.cargo_count} for {self.__max_weight}" 
+    def print_items(self):
+        for cargo in self.cargos:
+            print(cargo)
+
+
+book = Item("ABC Book", 2)
+phone = Item("Nokia 3210", 1)
+brick = Item("Brick", 4)
+
+adas_suitcase = Suitcase(10)
+adas_suitcase.add_item(book)
+adas_suitcase.add_item(phone)
+
+peters_suitcase = Suitcase(10)
+peters_suitcase.add_item(brick)
+
+cargo_hold = CargoHold(1000)
+cargo_hold.add_suitcase(adas_suitcase)
+cargo_hold.add_suitcase(peters_suitcase)
+
+print("The suitcases in the cargo hold contain the following items:")
+cargo_hold.print_items()
