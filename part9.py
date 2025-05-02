@@ -678,9 +678,8 @@ class Suitcase:
         else:
             return None
     
-    def get_items(self): # Public method to access the list of items in another class (CargoHold class)
+    def get_items(self): # Public method to give access the list of items in another class (CargoHold class)
         return self.__items
-
             
     def __str__(self):
         if self.__count == 1 :
