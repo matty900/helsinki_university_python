@@ -176,15 +176,118 @@ class RockPaperScissors(WordGame):
                            pass
                     return result
 
-game = int(input("select the game: 1. default 2.longestWord 3.MostVowels 34.RockPaperScissors:\n"))     
-if game == 1:
-       p = WordGame(3)
-elif game == 2:
-       p = LongestWord(3)
-elif game == 3:
-       p = MostVowels(3)
-elif game == 4:
-       p = RockPaperScissors(4)
-else:
-       print("select the proper option ")                        
-p.play()
+# game = int(input("select the game: 1. default 2.longestWord 3.MostVowels 4.RockPaperScissors:\n"))     
+# if game == 1:
+#        p = WordGame(3)
+# elif game == 2:
+#        p = LongestWord(3)
+# elif game == 3:
+#        p = MostVowels(3)
+# elif game == 4:
+#        p = RockPaperScissors(4)
+# else:
+#        print("select the proper option ")                        
+# p.play()
+
+
+''' Access modifiers 
+a private attribute in a super class cannot be accessed by inherited class. to solved this issue.
+ instead making the attrute private __notes[] (two underscore) we make it protected _note[] (one underscore).
+
+Access modifier Example Visible to client	Visible to derived class
+Public	       self.name	   yes	             yes
+Protected	self._name	    no	             yes
+Private	self.__name	    no	              no
+'''
+
+# Supergroup
+
+
+class SuperHero:
+    def __init__(self, name: str, superpowers: str):
+        self._name = name
+        self._superpowers = superpowers
+
+    @property
+    def name(self):
+        return self._name
+
+    @property
+    def superpowers(self):
+        return self._superpowers
+
+    def __repr__(self):
+        return f"{self._name}, superpowers: {self._superpowers}"
+
+class SuperGroup:
+    def __init__(self, name: str, location: str):
+        self._name = name
+        self._location = location
+        self._members = []
+
+    @property
+    def name(self):
+        return self._name
+
+    @property
+    def location(self):
+        return self._location
+
+    def add_member(self, hero: SuperHero):
+        self._members.append(hero)
+
+    def print_group(self):
+        print(f"{self._name}, {self._location}")
+        print("Members:")
+        for member in self._members:
+            print(member)
+
+# superperson = SuperHero("SuperPerson", "Superspeed, superstrength")
+# invisible = SuperHero("Invisible Inca", "Invisibility")
+# revengers = SuperGroup("Revengers", "Emerald City")
+
+# revengers.add_member(superperson)
+# revengers.add_member(invisible)
+# revengers.print_group()
+
+
+# Secret magic potion
+class MagicPotion:
+    def __init__(self, name: str):
+        self._name = name
+        self._ingredients = []
+        self._amounts = []
+
+    def add_ingredient(self, ingredient: str, amount: float):
+        self._ingredients.append(ingredient)
+        self._amounts.append(amount)
+
+    def print_recipe(self):
+        print(f"{self._name}:")
+        for i in range(len(self._ingredients)):
+            print(f"{self._ingredients[i]} {self._amounts[i]} grams")
+
+class SecretMagicPotion(MagicPotion):
+    def __init__(self, name: str, password: str):
+        super().__init__(name)
+        self.__password = password
+
+    def add_ingredient(self, ingredient: str, amount: float, password: str):
+        if password == self.__password:
+            super().add_ingredient(ingredient, amount)
+        else:
+            raise ValueError("Wrong password!")
+
+    def print_recipe(self, password: str):
+        if password == self.__password:
+            super().print_recipe()
+        else:
+            raise ValueError("Wrong password!")
+
+diminuendo = SecretMagicPotion("Diminuendo maximus", "hocuspocus")
+diminuendo.add_ingredient("Toadstool", 1.5, "hocuspocus")
+diminuendo.add_ingredient("Magic sand", 3.0, "hocuspocus")
+diminuendo.add_ingredient("Frogspawn", 4.0, "hocuspocus")
+diminuendo.print_recipe("hocuspocus")
+
+diminuendo.print_recipe("pocushocus") # WRONG password!
